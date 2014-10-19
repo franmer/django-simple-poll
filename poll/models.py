@@ -6,6 +6,7 @@ from django.utils.translation import gettext as _
 from django.db.models.manager import Manager
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from esgiso.models import Proyecto
 
 User = settings.AUTH_USER_MODEL
 
@@ -15,6 +16,7 @@ class PublishedManager(Manager):
         return super(PublishedManager, self).get_query_set().filter(is_published=True)
 
 class Poll(models.Model):
+    proyecto =  models.ForeignKey(Proyecto, related_name='encuestas')
     title = models.CharField(max_length=250, verbose_name=_('Pregunta'))
     date = models.DateField(verbose_name=_('Fecha'), default=datetime.date.today)
     is_published = models.BooleanField(default=True, verbose_name=_('Publicada'))
@@ -39,6 +41,7 @@ class Poll(models.Model):
 
 
 class Item(models.Model):
+    proyecto =  models.ForeignKey(Proyecto, related_name='respuestas')
     poll = models.ForeignKey(Poll)
     value = models.CharField(max_length=250, verbose_name=_('Valor'))
     pos = models.SmallIntegerField(default='0', verbose_name=_('Posición'))
@@ -57,6 +60,7 @@ class Item(models.Model):
 
 
 class Vote(models.Model):
+    proyecto =  models.ForeignKey(Proyecto, related_name='votos')
     poll = models.ForeignKey(Poll, verbose_name=_('Encuesta'))
     item = models.ForeignKey(Item, verbose_name=_('Elemento votado'))
     ip = models.IPAddressField(verbose_name=_('user\'s IP'))
