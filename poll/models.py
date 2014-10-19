@@ -5,13 +5,9 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.db.models.manager import Manager
 from django.core.exceptions import ValidationError
+from django.conf import settings
 
-try:
-    from django.contrib.auth import get_user_model
-except ImportError:
-    from django.contrib.auth.models import User
-else:
-    User = get_user_model()
+User = settings.AUTH_USER_MODEL
 
 
 class PublishedManager(Manager):
