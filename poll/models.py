@@ -15,17 +15,17 @@ class PublishedManager(Manager):
         return super(PublishedManager, self).get_query_set().filter(is_published=True)
 
 class Poll(models.Model):
-    title = models.CharField(max_length=250, verbose_name=_('question'))
-    date = models.DateField(verbose_name=_('date'), default=datetime.date.today)
-    is_published = models.BooleanField(default=True, verbose_name=_('is published'))
+    title = models.CharField(max_length=250, verbose_name=_('Pregunta'))
+    date = models.DateField(verbose_name=_('Fecha'), default=datetime.date.today)
+    is_published = models.BooleanField(default=True, verbose_name=_('Publicada'))
 
     objects = models.Manager()
     published = PublishedManager()
 
     class Meta:
         ordering = ['-date']
-        verbose_name = _('poll')
-        verbose_name_plural = _('polls')
+        verbose_name = _('Encuesta')
+        verbose_name_plural = _('Encuestas')
 
     def __unicode__(self):
         return self.title
@@ -40,12 +40,12 @@ class Poll(models.Model):
 
 class Item(models.Model):
     poll = models.ForeignKey(Poll)
-    value = models.CharField(max_length=250, verbose_name=_('value'))
-    pos = models.SmallIntegerField(default='0', verbose_name=_('position'))
+    value = models.CharField(max_length=250, verbose_name=_('Valor'))
+    pos = models.SmallIntegerField(default='0', verbose_name=_('Posición'))
 
     class Meta:
-        verbose_name = _('answer')
-        verbose_name_plural = _('answers')
+        verbose_name = _('Respuesta')
+        verbose_name_plural = _('Respuestas')
         ordering = ['pos']
 
     def __unicode__(self):
@@ -57,16 +57,16 @@ class Item(models.Model):
 
 
 class Vote(models.Model):
-    poll = models.ForeignKey(Poll, verbose_name=_('poll'))
-    item = models.ForeignKey(Item, verbose_name=_('voted item'))
+    poll = models.ForeignKey(Poll, verbose_name=_('Encuesta'))
+    item = models.ForeignKey(Item, verbose_name=_('Elemento votado'))
     ip = models.IPAddressField(verbose_name=_('user\'s IP'))
     user = models.ForeignKey(User, blank=True, null=True,
-                             verbose_name=_('user'))
+                             verbose_name=_('usuario'))
     datetime = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = _('vote')
-        verbose_name_plural = _('votes')
+        verbose_name = _('Voto')
+        verbose_name_plural = _('Votos')
 
     def __unicode__(self):
         if isinstance(self.user, User):
