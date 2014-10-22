@@ -61,7 +61,7 @@ class Item(models.Model):
 
 class Vote(models.Model):
     proyecto =  models.ForeignKey(Proyecto, related_name='votos')
-    poll = models.ForeignKey(Poll, verbose_name=_('Encuesta'))
+    poll = models.ForeignKey(Poll, verbose_name=_('Pregunta'))
     item = models.ForeignKey(Item, verbose_name=_('Elemento votado'), null=True)
     ip = models.IPAddressField(verbose_name=_('user\'s IP'))
     empresa = models.ForeignKey(ClienteProveedor, null=False,
