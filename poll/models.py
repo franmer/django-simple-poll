@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 from django.db.models.manager import Manager
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from esgiso.models import Proyecto
+from esgiso.models import Proyecto, ClienteProveedor
 
 User = settings.AUTH_USER_MODEL
 
@@ -62,8 +62,10 @@ class Item(models.Model):
 class Vote(models.Model):
     proyecto =  models.ForeignKey(Proyecto, related_name='votos')
     poll = models.ForeignKey(Poll, verbose_name=_('Encuesta'))
-    item = models.ForeignKey(Item, verbose_name=_('Elemento votado'))
+    item = models.ForeignKey(Item, verbose_name=_('Elemento votado'), null=True)
     ip = models.IPAddressField(verbose_name=_('user\'s IP'))
+    empresa = models.ForeignKey(ClienteProveedor, null=False,
+                             verbose_name=_('Empresa'))
     user = models.ForeignKey(User, blank=True, null=True,
                              verbose_name=_('usuario'))
     datetime = models.DateTimeField(auto_now_add=True)
