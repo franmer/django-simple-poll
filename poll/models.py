@@ -16,7 +16,7 @@ class PublishedManager(Manager):
         return super(PublishedManager, self).get_query_set().filter(is_published=True)
 
 class Poll(models.Model):
-    proyecto =  models.ForeignKey(Proyecto, related_name='encuestas')
+    proyecto =  models.ForeignKey(Proyecto, related_name='preguntas')
     title = models.CharField(max_length=250, verbose_name=_('Pregunta'))
     date = models.DateField(verbose_name=_('Fecha'), default=datetime.date.today)
     is_published = models.BooleanField(default=True, verbose_name=_('Publicada'))
