@@ -34,7 +34,7 @@ class Poll(models.Model):
 
     def get_vote_count(self):
         return Vote.objects.filter(poll=self).count()
-    vote_count = property(fget=get_vote_count)
+    vote_count = property(fget=get_vote_count, verbose_name="Votos")
 
     def get_cookie_name(self):
         return str('poll_%s' % (self.pk))
