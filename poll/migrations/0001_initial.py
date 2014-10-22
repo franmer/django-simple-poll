@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'Poll'
         db.create_table(u'poll_poll', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('proyecto', self.gf('django.db.models.fields.related.ForeignKey')(related_name='encuestas', to=orm['esgiso.Proyecto'])),
+            ('proyecto', self.gf('django.db.models.fields.related.ForeignKey')(related_name='preguntas', to=orm['esgiso.Proyecto'])),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=250)),
             ('date', self.gf('django.db.models.fields.DateField')(default=datetime.date.today)),
             ('is_published', self.gf('django.db.models.fields.BooleanField')(default=True)),
@@ -33,8 +33,9 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('proyecto', self.gf('django.db.models.fields.related.ForeignKey')(related_name='votos', to=orm['esgiso.Proyecto'])),
             ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['poll.Poll'])),
-            ('item', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['poll.Item'])),
+            ('item', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['poll.Item'], null=True)),
             ('ip', self.gf('django.db.models.fields.IPAddressField')(max_length=15)),
+            ('empresa', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['esgiso.ClienteProveedor'])),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['users.User'], null=True, blank=True)),
             ('datetime', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
@@ -107,6 +108,29 @@ class Migration(SchemaMigration):
             'telefono2': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'related_name': "'empleado'", 'unique': 'True', 'primary_key': 'True', 'to': u"orm['users.User']"})
         },
+        u'esgiso.clienteproveedor': {
+            'Meta': {'object_name': 'ClienteProveedor'},
+            'coordenadas': ('geoposition.fields.GeopositionField', [], {'max_length': '42'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
+            'direccion': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'email2_contacto': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'email_contacto': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'empresa': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'empresas'", 'to': u"orm['esgiso.Empresa']"}),
+            'es_cliente': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'es_proveedor': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'fecha_entrada': ('django.db.models.fields.DateField', [], {'default': 'datetime.datetime.now', 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'localidad': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'observaciones': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'pais': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'proyecto': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'empresas'", 'to': u"orm['esgiso.Proyecto']"}),
+            'region': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'rubro_texto': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'telefono': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'telefono2': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'})
+        },
         u'esgiso.empleadoproyecto': {
             'Meta': {'ordering': "('-modified', '-created')", 'object_name': 'EmpleadoProyecto'},
             'acceso': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -118,6 +142,25 @@ class Migration(SchemaMigration):
             'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
             'proyecto': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['esgiso.Proyecto']"}),
             'seleccionado': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
+        },
+        u'esgiso.empresa': {
+            'Meta': {'object_name': 'Empresa'},
+            'coordenadas': ('geoposition.fields.GeopositionField', [], {'max_length': '42'}),
+            'created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
+            'direccion': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'email2_contacto': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'email_contacto': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'localidad': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'modified': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now', 'blank': 'True'}),
+            'nif': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'pais': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'proyecto': ('annoying.fields.AutoOneToOneField', [], {'related_name': "'empresa'", 'unique': 'True', 'primary_key': 'True', 'to': u"orm['esgiso.Proyecto']"}),
+            'razon_social': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'region': ('django.db.models.fields.CharField', [], {'max_length': '256', 'blank': 'True'}),
+            'rubro_texto': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'telefono': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'}),
+            'telefono2': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True', 'blank': 'True'})
         },
         u'esgiso.proyecto': {
             'Meta': {'ordering': "['-nombre']", 'object_name': 'Proyecto'},
@@ -143,15 +186,16 @@ class Migration(SchemaMigration):
             'date': ('django.db.models.fields.DateField', [], {'default': 'datetime.date.today'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_published': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'proyecto': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'encuestas'", 'to': u"orm['esgiso.Proyecto']"}),
+            'proyecto': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'preguntas'", 'to': u"orm['esgiso.Proyecto']"}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '250'})
         },
         u'poll.vote': {
             'Meta': {'object_name': 'Vote'},
             'datetime': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'empresa': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['esgiso.ClienteProveedor']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'ip': ('django.db.models.fields.IPAddressField', [], {'max_length': '15'}),
-            'item': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['poll.Item']"}),
+            'item': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['poll.Item']", 'null': 'True'}),
             'poll': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['poll.Poll']"}),
             'proyecto': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'votos'", 'to': u"orm['esgiso.Proyecto']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['users.User']", 'null': 'True', 'blank': 'True'})
