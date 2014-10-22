@@ -26,8 +26,8 @@ class Poll(models.Model):
 
     class Meta:
         ordering = ['-date']
-        verbose_name = _('Encuesta')
-        verbose_name_plural = _('Encuestas')
+        verbose_name = _('Pregunta')
+        verbose_name_plural = _('Preguntas')
 
     def __unicode__(self):
         return self.title
